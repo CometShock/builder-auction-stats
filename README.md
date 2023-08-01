@@ -6,7 +6,7 @@ Currently pulls nearly-live data from each MEV-Boost block relay every 12 second
 
 ### Nuances
 If the proposer for the next slot is not registered with the relay, the relay will not serve any data responses for that slot (except Flashbots relay).
-In practice, this means that a relay's data response with 0 entries is signaling that the proposer for that slot is not registered. Either the proposer is a vanilla block builder, or they are selectively registered with only *some* of the other relays. Flashbots block relay appears to serve data responses regardless of proposer registry.
+In practice, this means that a relay's data response with 0 entries is signaling that the proposer for that slot is not registered. Either the proposer is a vanilla block builder, or they are selectively registered with only *some* of the other relays.
 
 ### Future Work
 - Error detection & handling in data collection
