@@ -37,7 +37,7 @@ urls = [
 # Feel free to tweak this in order to get closer to the live slot, but beware
 # asking on the live slot as you may not get complete data.
 reference_time = datetime(2023, 7, 15, 12, 22, 13)
-reference_slot = 6884808
+reference_slot = 6884807
 
 def calculate_current_slot():
     current_time = datetime.now()
