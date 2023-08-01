@@ -16,5 +16,5 @@ In practice, this means that a relay's data response with 0 entries is signaling
   - Backfill data collection (from a reference block/slot)
   - Custom windowed stats
   - Custom builder selection
-  - Rolling stats with custom roll width
+  - Rolling window stats with custom rolling width
 - [REDACTED] ;)
