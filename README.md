@@ -1,6 +1,6 @@
 # builder-auction-stats
 
-An unpolished scrappy approach to collect MEV-Boost Builder Auction data and generate analytics using the collected data.
+An unpolished scrappy approach to collect MEV-Boost Builder Auction data, store it in a PostgreSQL database, and generate analytics using the collected data.
 
 Currently pulls nearly-live data from each MEV-Boost block relay every 12 seconds, keeping pace with slots.
 
