@@ -2,6 +2,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import psycopg2
 import matplotlib.ticker as ticker
+import argparse
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Process the bids for a specified builder_pubkey.')
+parser.add_argument('--builder_pubkey', default='0x945fc51bf63613257792926c9155d7ae32db73155dc13bdfe61cd476f1fd2297b66601e8721b723cef11e4e6682e9d87', help='the builder_pubkey to process')
+args = parser.parse_args()
 
 # Connect to your postgres DB
 conn = psycopg2.connect(dbname='builder_bids_db', user='postgres', password='postgres', host='localhost', port=5432)
@@ -10,7 +16,7 @@ conn = psycopg2.connect(dbname='builder_bids_db', user='postgres', password='pos
 cur = conn.cursor()
 
 # Execute a query
-cur.execute("SELECT MAX(highest_value)*1e-18 as max_bid, slot FROM best_bids WHERE builder_pubkey='0xabc387dff20ff4bda974b7f3041ea857d591681cc03271519196587a2d6b30c953ea4df11acf637db76f462834a8c80e' GROUP BY slot ORDER BY slot DESC")
+cur.execute(f"SELECT MAX(highest_value)*1e-18 as max_bid, slot FROM best_bids WHERE builder_pubkey='{args.builder_pubkey}' GROUP BY slot ORDER BY slot DESC")
 
 # Retrieve query results
 rows = cur.fetchall()
@@ -35,9 +41,10 @@ df.sort_values('slot', inplace=True)
 plt.stem(df['slot'], df['max_bid'], markerfmt=' ', basefmt="b-")
 
 # Customize the plot
-plt.title('max_bid per slot')
+plt.title(f'{args.builder_pubkey}', fontsize=6)
+plt.suptitle("Specified Block Builder's Max Bid for Each Slot")
 plt.xlabel('Slot')
-plt.ylabel('max_bid')
+plt.ylabel('Max Bid (ETH)')
 plt.grid(axis='y')  # Add a horizontal grid for better readability
 
 # Set the number of ticks you want to display on the x-axis (adjust this as needed)
