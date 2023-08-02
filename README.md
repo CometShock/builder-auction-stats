@@ -16,7 +16,7 @@ In practice, this means that a relay's data response with 0 entries is signaling
 5. Run `python3 collection/collect-bids.py` in your terminal to continuously collect live bids. Note the first slot number you collected from.
 6. After at least 30 seconds, in a separate terminal run `python3 processing/best-bid.py --start_slot YOUR_FIRST_SLOT_NUMBER_HERE` to process the best bids from each builder, per slot.
 7. best-bid.py does terminate once it caught up to collect-bids.py, but notes the slot it finished at. You can run it again with just `python3 processing/best-bid.py` and it should pick up from where it left off.
-8. Run `python3 analytics/builder_case.py` to display a case study plot of a single block builder's highest bid for each slot you have collected data from. You can optionally specify the builder pubkey that you want to analyze with `python3 analytics/builder_case.py --builder_pubkey 'YOUR_DESIRED_BUILDER_PUBKEY_HERE'`
+8. Run `python3 analytics/builder-case.py` to display a case study plot of a single block builder's highest bid for each slot you have collected data from. You can optionally specify the builder pubkey that you want to analyze with `python3 analytics/builder-case.py --builder_pubkey 'YOUR_DESIRED_BUILDER_PUBKEY_HERE'`
 
 ### Dependencies
 - pandas
