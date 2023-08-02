@@ -38,4 +38,5 @@ In practice, this means that a relay's data response with 0 entries is signaling
   - Call out builder names rather than pubkeys where applicable
   - Rolling window stats with custom rolling width
 - Eliminate some duplicate entries bleeding through in best_bids Table
+- Prevent duplicate entries of where it's same slot, same entry
 - [REDACTED] ;)
