@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 # PostgreSQL connection parameters
 db_params = {
-    'dbname': 'postgres',
+    'dbname': 'builder_bids_db',
     'user': 'postgres',
     'password': 'postgres',
     'host': 'localhost',  # or the IP address of your PostgreSQL server
@@ -18,6 +18,27 @@ conn = psycopg2.connect(**db_params)
 
 # Create a cursor object
 cur = conn.cursor()
+
+# Create the 'builder_bids' table if it doesn't exist
+cur.execute("""
+    CREATE TABLE IF NOT EXISTS builder_bids (
+        slot INTEGER,
+        parent_hash TEXT,
+        block_hash TEXT,
+        builder_pubkey TEXT,
+        proposer_fee_recipient TEXT,
+        gas_limit INTEGER,
+        gas_used INTEGER,
+        value NUMERIC,
+        block_number INTEGER,
+        num_tx INTEGER,
+        timestamp TIMESTAMP,
+        timestamp_ms NUMERIC,
+        url TEXT
+    )
+""")
+conn.commit()
+
 # list of your API URLs
 urls = [
     "https://0xac6e77dfe25ecd6110b8e780608cce0dab71fdd5ebea22a16c0205200f2f8e2e3ad3b71d3499c54ad14d6c21b41a37ae@boost-relay.flashbots.net",
@@ -85,17 +106,18 @@ while True:  # infinite loop
                 value = bid_trace.get('value')
                 block_number = bid_trace.get('block_number')
                 num_tx = bid_trace.get('num_tx')
-                timestamp = bid_trace.get('timestamp')
+                timestamp = int(bid_trace.get('timestamp'))  # get the Unix timestamp
+                timestamp = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')  # convert to a datetime object, then to a string
                 timestamp_ms = bid_trace.get('timestamp_ms')
 
                 # Insert the data into the database
                 cur.execute("""
                     INSERT INTO builder_bids (slot, parent_hash, block_hash, builder_pubkey, proposer_fee_recipient,
-                                           gas_limit, gas_used, value, block_number, num_tx, timestamp, timestamp_ms,
-                                           url)
+                                        gas_limit, gas_used, value, block_number, num_tx, timestamp, timestamp_ms,
+                                        url)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, (slot, parent_hash, block_hash, builder_pubkey, proposer_fee_recipient, gas_limit, gas_used,
-                      value, block_number, num_tx, timestamp, timestamp_ms, url))
+                    value, block_number, num_tx, timestamp, timestamp_ms, url))
                 
                 # Commit the transaction
                 conn.commit()
